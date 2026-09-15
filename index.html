@@ -18,7 +18,7 @@
             margin: 0;
             min-height: 100vh;
             font-family: Arial, Tahoma, sans-serif;
-            background: linear-gradient(135deg, #0b203a, #315d92);
+            background: #eef3f7;
             color: #263746;
         }
 
@@ -37,40 +37,38 @@
             display: none !important;
         }
 
-        /* الصفحة الرئيسية */
-
         .landing {
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             padding: 20px;
+            background: linear-gradient(135deg, #0b203a, #315d92);
         }
 
         .landing-card {
             width: 100%;
-            max-width: 850px;
+            max-width: 800px;
             padding: 40px;
             text-align: center;
-            background: #f5f7f9;
-            border-radius: 30px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, .3);
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .3);
         }
 
         .logo {
-            width: 160px;
-            height: 160px;
+            width: 130px;
+            height: 130px;
             object-fit: contain;
         }
 
         .landing h1 {
-            margin: 10px 0;
             color: #315d92;
-            font-size: 42px;
+            font-size: 35px;
         }
 
         .landing p {
-            color: #778592;
+            color: #777;
         }
 
         .entry-buttons {
@@ -81,35 +79,32 @@
         }
 
         .entry-button {
-            padding: 22px 12px;
+            padding: 20px 10px;
             color: white;
-            background: #6f7f8c;
+            background: #315d92;
             border: 0;
-            border-radius: 16px;
-            font-size: 17px;
+            border-radius: 13px;
             font-weight: bold;
         }
 
         .entry-button:nth-child(2) {
-            background: #315d92;
+            background: #158f63;
         }
 
         .entry-button:nth-child(3) {
-            background: #485d6e;
+            background: #596b7a;
         }
 
         .entry-button span {
             display: block;
             margin-bottom: 8px;
-            font-size: 28px;
+            font-size: 30px;
         }
-
-        /* تسجيل الدخول */
 
         .overlay {
             position: fixed;
             inset: 0;
-            z-index: 10;
+            z-index: 20;
             display: none;
             align-items: center;
             justify-content: center;
@@ -124,24 +119,11 @@
         .login-box {
             position: relative;
             width: 100%;
-            max-width: 420px;
+            max-width: 400px;
             padding: 30px;
             text-align: center;
-            background: #f5f7f9;
-            border-radius: 22px;
-        }
-
-        .close-button {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            width: 32px;
-            height: 32px;
-            color: white;
-            background: #d5424d;
-            border: 0;
-            border-radius: 50%;
-            font-size: 20px;
+            background: white;
+            border-radius: 20px;
         }
 
         .login-box img {
@@ -154,41 +136,65 @@
             color: #315d92;
         }
 
-        .login-box label {
-            display: block;
-            margin: 13px 0 6px;
-            text-align: right;
-            font-size: 13px;
-            font-weight: bold;
+        .close-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 32px;
+            height: 32px;
+            color: white;
+            background: #d5424d;
+            border: 0;
+            border-radius: 50%;
+            font-size: 20px;
         }
 
-        .login-box input {
+        label {
+            display: block;
+            margin: 10px 0 6px;
+            color: #657786;
+            font-size: 13px;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        input,
+        select,
+        textarea {
             width: 100%;
-            padding: 13px;
-            border: 1px solid #d6e0e8;
-            border-radius: 10px;
+            padding: 12px;
+            border: 1px solid #d7e1e8;
+            border-radius: 8px;
             outline: none;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .login-button,
+        .btn {
+            padding: 11px 16px;
+            border: 0;
+            border-radius: 8px;
+            font-weight: bold;
         }
 
         .login-button {
             width: 100%;
             margin-top: 20px;
-            padding: 13px;
             color: white;
             background: #315d92;
-            border: 0;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: bold;
         }
 
         .login-error {
             display: none;
             margin-top: 10px;
             padding: 8px;
-            color: #ad2935;
-            background: #ffe4e7;
-            border-radius: 8px;
+            color: #a52331;
+            background: #ffe1e5;
+            border-radius: 7px;
             font-size: 12px;
         }
 
@@ -196,12 +202,9 @@
             display: block;
         }
 
-        /* لوحة التحكم */
-
         .dashboard {
             display: none;
             min-height: 100vh;
-            background: #f1f5f8;
         }
 
         .dashboard.show {
@@ -213,7 +216,7 @@
             top: 0;
             right: 0;
             bottom: 0;
-            width: 250px;
+            width: 240px;
             padding: 25px 15px;
             color: white;
             background: #0b203a;
@@ -224,12 +227,12 @@
             align-items: center;
             gap: 10px;
             padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, .2);
+            border-bottom: 1px solid rgba(255,255,255,.2);
         }
 
         .brand img {
-            width: 55px;
-            height: 55px;
+            width: 52px;
+            height: 52px;
             object-fit: contain;
             background: white;
             border-radius: 50%;
@@ -249,19 +252,19 @@
             color: #dbe7f0;
             background: transparent;
             border: 0;
-            border-radius: 9px;
+            border-radius: 8px;
             text-align: right;
         }
 
         .side-button:hover,
         .side-button.active {
             color: white;
-            background: rgba(255, 255, 255, .15);
+            background: rgba(255,255,255,.15);
         }
 
         .main {
-            width: calc(100% - 250px);
-            margin-right: 250px;
+            width: calc(100% - 240px);
+            margin-right: 240px;
         }
 
         .topbar {
@@ -291,7 +294,7 @@
         }
 
         .content {
-            padding: 28px;
+            padding: 25px;
         }
 
         .page {
@@ -307,16 +310,16 @@
             padding: 25px;
             color: white;
             background: linear-gradient(120deg, #0b203a, #4d86bd);
-            border-radius: 18px;
+            border-radius: 15px;
         }
 
         .welcome h2 {
-            margin: 0 0 7px;
+            margin: 0 0 8px;
         }
 
         .welcome p {
             margin: 0;
-            color: #e2edf6;
+            color: #e5eef6;
             font-size: 13px;
         }
 
@@ -327,22 +330,32 @@
             margin-bottom: 20px;
         }
 
-        .stat {
-            padding: 17px;
+        .stat,
+        .card {
+            padding: 20px;
             background: white;
-            border-radius: 13px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, .04);
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, .04);
         }
 
         .stat strong {
             display: block;
             color: #315d92;
-            font-size: 26px;
+            font-size: 27px;
         }
 
         .stat span {
             color: #7b8995;
             font-size: 11px;
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #0b203a;
         }
 
         .grid {
@@ -351,43 +364,8 @@
             gap: 20px;
         }
 
-        .card {
-            margin-bottom: 20px;
-            padding: 22px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, .04);
-        }
-
-        .card h3 {
-            margin-top: 0;
-            color: #0b203a;
-        }
-
         .field {
             margin-bottom: 13px;
-        }
-
-        .field label {
-            display: block;
-            margin-bottom: 6px;
-            color: #657786;
-            font-size: 12px;
-        }
-
-        input,
-        select,
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #dce6ed;
-            border-radius: 9px;
-            outline: none;
-        }
-
-        textarea {
-            min-height: 85px;
-            resize: vertical;
         }
 
         .button-row {
@@ -397,24 +375,18 @@
             margin-top: 15px;
         }
 
-        .btn {
-            padding: 11px 16px;
-            color: white;
-            border: 0;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
         .btn-primary {
+            color: white;
             background: #315d92;
         }
 
         .btn-success {
+            color: white;
             background: #159465;
         }
 
         .btn-danger {
+            color: white;
             background: #d5424d;
         }
 
@@ -432,20 +404,20 @@
             padding: 15px;
             background: #f1f8fc;
             border: 2px dashed #bdd4e4;
-            border-radius: 13px;
+            border-radius: 12px;
             text-align: center;
         }
 
         .camera-box img {
             max-width: 100%;
-            max-height: 220px;
+            max-height: 230px;
             margin-bottom: 12px;
-            border-radius: 10px;
+            border-radius: 8px;
             object-fit: contain;
         }
 
         .camera-icon {
-            margin-bottom: 15px;
+            margin-bottom: 14px;
             font-size: 45px;
         }
 
@@ -465,7 +437,7 @@
         }
 
         .progress-bar {
-            width: 0%;
+            width: 0;
             height: 100%;
             background: #315d92;
             transition: width .3s;
@@ -477,18 +449,18 @@
             gap: 8px;
         }
 
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
 
-        .table-wrapper {
-            overflow-x: auto;
-        }
-
         th,
         td {
-            padding: 12px;
+            padding: 11px;
             border-bottom: 1px solid #edf1f4;
             text-align: right;
             white-space: nowrap;
@@ -536,13 +508,7 @@
             }
 
             .sidebar {
-                transform: translateX(100%);
-                transition: .3s;
-                z-index: 5;
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
+                display: none;
             }
 
             .main {
@@ -551,7 +517,7 @@
             }
 
             .content {
-                padding: 16px;
+                padding: 15px;
             }
 
             .landing-card {
@@ -559,7 +525,7 @@
             }
 
             .landing h1 {
-                font-size: 29px;
+                font-size: 28px;
             }
         }
     </style>
@@ -575,22 +541,23 @@
 
             <h1>نظام أمن البوابات</h1>
 
-            <p>
-                اختر نوع الدخول للوصول إلى النظام
-            </p>
+            <p>اختر نوع الدخول للوصول إلى النظام</p>
 
             <div class="entry-buttons">
-                <button class="entry-button" onclick="openLogin('security')">
+                <button class="entry-button"
+                    onclick="openLogin('security')">
                     <span>🛡️</span>
                     دخول الأمن
                 </button>
 
-                <button class="entry-button" onclick="openLogin('permits')">
+                <button class="entry-button"
+                    onclick="openLogin('permits')">
                     <span>📋</span>
                     دخول التصاريح
                 </button>
 
-                <button class="entry-button" onclick="openLogin('admin')">
+                <button class="entry-button"
+                    onclick="openLogin('admin')">
                     <span>📊</span>
                     دخول الإدارة
                 </button>
@@ -598,11 +565,12 @@
         </div>
     </section>
 
-    <!-- نافذة الدخول -->
+    <!-- تسجيل الدخول -->
 
     <div class="overlay" id="loginOverlay">
         <div class="login-box">
-            <button class="close-button" onclick="closeLogin()">×</button>
+            <button class="close-button"
+                onclick="closeLogin()">×</button>
 
             <img src="logo.png" alt="الشعار">
 
@@ -610,10 +578,10 @@
 
             <form onsubmit="event.preventDefault(); login();">
                 <label>اسم المستخدم</label>
-                <input id="username" type="text" placeholder="اسم المستخدم">
+                <input id="username" type="text">
 
                 <label>كلمة المرور</label>
-                <input id="password" type="password" placeholder="كلمة المرور">
+                <input id="password" type="password">
 
                 <div class="login-error" id="loginError">
                     اسم المستخدم أو كلمة المرور غير صحيحة
@@ -630,14 +598,10 @@
 
     <section class="dashboard" id="dashboard">
 
-        <aside class="sidebar" id="sidebar">
+        <aside class="sidebar">
             <div class="brand">
                 <img src="logo.png" alt="الشعار">
-
-                <strong>
-                    نظام أمن<br>
-                    البوابات
-                </strong>
+                <strong>نظام أمن<br>البوابات</strong>
             </div>
 
             <div class="side-title">القائمة الرئيسية</div>
@@ -672,14 +636,10 @@
             <header class="topbar">
                 <div>
                     <h1 id="dashboardTitle">بوابة الأمن</h1>
-                    <p id="dashboardSubtitle">
-                        قراءة رقم لوحة المركبة وتسجيل الحركة
-                    </p>
+                    <p>قراءة رقم لوحة المركبة وتسجيل الحركة</p>
                 </div>
 
-                <div class="user" id="currentUser">
-                    المستخدم
-                </div>
+                <div class="user" id="currentUser"></div>
             </header>
 
             <div class="content">
@@ -691,7 +651,8 @@
                     <div class="welcome">
                         <h2>مرحبًا بك في بوابة الأمن</h2>
                         <p>
-                            صوّر اللوحة وسيحاول النظام قراءة الرقم العلوي والسفلي بالشكل 4/66759.
+                            صوّر اللوحة أو أدخل الرقم يدويًا، مثل:
+                            4/66759
                         </p>
                     </div>
 
@@ -730,7 +691,7 @@
                                 </strong>
 
                                 <p>
-                                    صوّر اللوحة كاملة بوضوح حتى يظهر الرقم العلوي والسفلي
+                                    صوّر اللوحة كاملة وبإضاءة واضحة
                                 </p>
 
                                 <button class="btn btn-primary"
@@ -750,13 +711,10 @@
                             <h3>بيانات المركبة</h3>
 
                             <div class="field">
-                                <label>
-                                    رقم اللوحة
-                                </label>
+                                <label>رقم اللوحة</label>
 
                                 <div class="search-row">
                                     <input id="securityPlate"
-                                        type="text"
                                         placeholder="مثال: 4/66759">
 
                                     <button class="btn btn-primary"
@@ -825,12 +783,13 @@
                     <div class="welcome">
                         <h2>إدارة التصاريح</h2>
                         <p>
-                            أضف تصريحًا برقم اللوحة، مثل: 4/66759
+                            أضف أي لوحة تريدها، مثل:
+                            4/66759 أو 2/12345
                         </p>
                     </div>
 
                     <div class="card">
-                        <h3>إضافة تصريح</h3>
+                        <h3>إضافة أو تعديل تصريح</h3>
 
                         <input id="permitId" type="hidden">
 
@@ -920,9 +879,7 @@
 
                     <div class="welcome">
                         <h2>الإدارة والسجل</h2>
-                        <p>
-                            متابعة عمليات النظام وحركات المركبات.
-                        </p>
+                        <p>متابعة التصاريح وحركات المركبات.</p>
                     </div>
 
                     <div class="stats">
@@ -985,37 +942,38 @@
     </section>
 
     <script>
-        /* بيانات الدخول */
+        /*
+         * بيانات الدخول
+         */
 
         const users = {
-            security: [
-                {
-                    username: "علي",
-                    password: "1234",
-                    name: "علي"
-                }
-            ],
+            security: {
+                username: "علي",
+                password: "1234",
+                name: "علي"
+            },
 
-            permits: [
-                {
-                    username: "تصاريح",
-                    password: "2468",
-                    name: "مسؤول التصاريح"
-                }
-            ],
+            permits: {
+                username: "تصاريح",
+                password: "2468",
+                name: "مسؤول التصاريح"
+            },
 
-            admin: [
-                {
-                    username: "admin",
-                    password: "9999",
-                    name: "مدير النظام"
-                }
-            ]
+            admin: {
+                username: "admin",
+                password: "9999",
+                name: "مدير النظام"
+            }
         };
 
         let loginType = "";
         let currentUser = null;
         let selectedCar = null;
+
+        /*
+         * قراءة البيانات الموجودة فقط.
+         * لا توجد لوحة تجريبية ثابتة.
+         */
 
         let permits = JSON.parse(
             localStorage.getItem("gatePermits") || "[]"
@@ -1030,11 +988,12 @@
         );
 
         document.addEventListener("DOMContentLoaded", function () {
-            createDemoPermit();
             renderAll();
         });
 
-        /* تسجيل الدخول */
+        /*
+         * تسجيل الدخول
+         */
 
         function openLogin(type) {
             loginType = type;
@@ -1045,14 +1004,15 @@
                 admin: "دخول الإدارة"
             };
 
-            document.getElementById("loginTitle").textContent =
-                titles[type];
+            document.getElementById("loginTitle")
+                .textContent = titles[type];
 
             document.getElementById("loginOverlay")
                 .classList.add("show");
 
             document.getElementById("username").value = "";
             document.getElementById("password").value = "";
+
             document.getElementById("loginError")
                 .classList.remove("show");
         }
@@ -1064,17 +1024,19 @@
 
         function login() {
             const username =
-                document.getElementById("username").value.trim();
+                document.getElementById("username")
+                    .value.trim();
 
             const password =
-                document.getElementById("password").value.trim();
+                document.getElementById("password")
+                    .value.trim();
 
-            const user = users[loginType].find(function (item) {
-                return item.username === username &&
-                    item.password === password;
-            });
+            const user = users[loginType];
 
-            if (!user) {
+            if (
+                username !== user.username ||
+                password !== user.password
+            ) {
                 document.getElementById("loginError")
                     .classList.add("show");
 
@@ -1108,20 +1070,24 @@
                 .classList.remove("hidden");
         }
 
-        /* التنقل */
+        /*
+         * التنقل
+         */
 
         function showSection(section) {
-            document.querySelectorAll(".page").forEach(function (page) {
-                page.classList.remove("active");
-            });
+            document.querySelectorAll(".page")
+                .forEach(function (page) {
+                    page.classList.remove("active");
+                });
 
             document.getElementById(section + "Page")
                 .classList.add("active");
 
-            document.querySelectorAll(".side-button[data-section]")
-                .forEach(function (button) {
-                    button.classList.remove("active");
-                });
+            document.querySelectorAll(
+                ".side-button[data-section]"
+            ).forEach(function (button) {
+                button.classList.remove("active");
+            });
 
             const activeButton = document.querySelector(
                 `.side-button[data-section="${section}"]`
@@ -1141,7 +1107,9 @@
                 .textContent = titles[section];
         }
 
-        /* الكاميرا */
+        /*
+         * الكاميرا
+         */
 
         function openCamera() {
             document.getElementById("cameraInput").click();
@@ -1155,34 +1123,40 @@
                     return;
                 }
 
-                const imageUrl = URL.createObjectURL(file);
+                const imageUrl =
+                    URL.createObjectURL(file);
 
-                document.getElementById("cameraBox").innerHTML = `
-                    <img id="previewImage" src="${imageUrl}">
+                document.getElementById("cameraBox")
+                    .innerHTML = `
+                        <img id="previewImage"
+                             src="${imageUrl}">
 
-                    <strong>
-                        جاري قراءة الرقم العلوي والسفلي...
-                    </strong>
+                        <strong>
+                            جاري قراءة رقم اللوحة...
+                        </strong>
 
-                    <div class="progress-wrap">
-                        <div class="progress-bar"
-                             id="ocrProgressBar"></div>
-                    </div>
+                        <div class="progress-wrap">
+                            <div class="progress-bar"
+                                 id="ocrProgressBar">
+                            </div>
+                        </div>
 
-                    <p id="ocrMessage">
-                        يرجى الانتظار...
-                    </p>
+                        <p id="ocrMessage">
+                            يرجى الانتظار
+                        </p>
 
-                    <button class="btn btn-gray"
-                            onclick="openCamera()">
-                        إعادة التصوير
-                    </button>
-                `;
+                        <button class="btn btn-gray"
+                                onclick="openCamera()">
+                            إعادة التصوير
+                        </button>
+                    `;
 
                 await readPlateNumber(file);
             });
 
-        /* قراءة اللوحة */
+        /*
+         * قراءة رقم اللوحة
+         */
 
         async function readPlateNumber(file) {
             const progressBar =
@@ -1192,10 +1166,8 @@
                 document.getElementById("ocrMessage");
 
             try {
-                if (message) {
-                    message.textContent =
-                        "جاري تجهيز صورة اللوحة...";
-                }
+                message.textContent =
+                    "جاري تجهيز الصورة...";
 
                 const processedImage =
                     await preparePlateImage(file);
@@ -1205,77 +1177,78 @@
                     "eng",
                     {
                         tessedit_pageseg_mode: "6",
-                        tessedit_char_whitelist: "0123456789/",
+
+                        tessedit_char_whitelist:
+                            "0123456789/",
+
                         logger: function (info) {
-                            if (info.status === "recognizing text") {
+                            if (
+                                info.status ===
+                                "recognizing text"
+                            ) {
                                 const progress =
-                                    Math.round(info.progress * 100);
+                                    Math.round(
+                                        info.progress * 100
+                                    );
 
-                                if (progressBar) {
-                                    progressBar.style.width =
-                                        progress + "%";
-                                }
+                                progressBar.style.width =
+                                    progress + "%";
 
-                                if (message) {
-                                    message.textContent =
-                                        "جاري قراءة اللوحة: " +
-                                        progress + "%";
-                                }
+                                message.textContent =
+                                    "جاري القراءة: " +
+                                    progress + "%";
                             }
                         }
                     }
                 );
 
-                const ocrText = result.data.text || "";
+                const ocrText =
+                    result.data.text || "";
 
-                let plateNumber =
+                const plateNumber =
                     extractPlateNumber(ocrText);
 
-                /*
-                 * إذا لم ينجح OCR في قراءة الرقم العلوي،
-                 * نضع الرقم المتوقع من موضع اللوحة.
-                 */
                 if (!plateNumber) {
-                    plateNumber = "4/66759";
+                    message.textContent =
+                        "لم يتم التعرف على الرقم، أدخله يدويًا";
+
+                    alert(
+                        "لم يتم التعرف على رقم اللوحة. " +
+                        "يرجى إدخاله يدويًا مثل 4/66759."
+                    );
+
+                    return;
                 }
 
                 document.getElementById("securityPlate")
                     .value = plateNumber;
 
-                if (message) {
-                    message.textContent =
-                        "تم التعرف على اللوحة: " +
-                        plateNumber;
-                }
+                message.textContent =
+                    "تم التعرف على: " + plateNumber;
 
                 findCar();
 
             } catch (error) {
-                console.error(error);
+                console.error("OCR Error:", error);
 
-                /*
-                 * الرقم الاحتياطي للصورة الحالية
-                 */
-                document.getElementById("securityPlate")
-                    .value = "4/66759";
+                message.textContent =
+                    "تعذر قراءة اللوحة، أدخل الرقم يدويًا";
 
-                if (message) {
-                    message.textContent =
-                        "تم وضع الرقم، ويمكن تعديله يدويًا";
-                }
-
-                findCar();
+                alert(
+                    "تعذر قراءة الصورة. أدخل رقم اللوحة يدويًا."
+                );
             }
         }
 
         /*
-         * قص منطقة الأرقام:
-         * الرقم العلوي 4 والرقم السفلي 66759
+         * تجهيز الصورة وقص منطقة الأرقام
          */
+
         function preparePlateImage(file) {
             return new Promise(function (resolve, reject) {
                 const image = new Image();
-                const imageUrl = URL.createObjectURL(file);
+                const imageUrl =
+                    URL.createObjectURL(file);
 
                 image.onload = function () {
                     try {
@@ -1286,21 +1259,20 @@
                             canvas.getContext("2d");
 
                         /*
-                         * الصورة المرفقة:
-                         * نترك الجزء الأوسط واليمين،
-                         * ونستبعد شريط الكويت والكتابة العربية.
+                         * نأخذ الجزء الذي يحتوي على:
+                         * الرقم العلوي والرقم الكبير.
                          */
                         const cropX =
                             Math.floor(image.width * 0.25);
 
                         const cropY =
-                            Math.floor(image.height * 0.07);
+                            Math.floor(image.height * 0.06);
 
                         const cropWidth =
                             Math.floor(image.width * 0.70);
 
                         const cropHeight =
-                            Math.floor(image.height * 0.86);
+                            Math.floor(image.height * 0.88);
 
                         canvas.width = 1800;
                         canvas.height = 1100;
@@ -1333,9 +1305,6 @@
                                 canvas.height
                             );
 
-                        /*
-                         * تحسين التباين وتحويل الصورة إلى أبيض وأسود
-                         */
                         for (
                             let i = 0;
                             i < imageData.data.length;
@@ -1392,7 +1361,7 @@
 
                 image.onerror = function () {
                     URL.revokeObjectURL(imageUrl);
-                    reject(new Error("تعذر تحميل الصورة"));
+                    reject(error);
                 };
 
                 image.src = imageUrl;
@@ -1403,6 +1372,7 @@
          * استخراج الرقم بالشكل:
          * 4/66759
          */
+
         function extractPlateNumber(text) {
             let value = String(text || "");
 
@@ -1418,15 +1388,17 @@
                 value.match(/(\d{1,2})\s*\/\s*(\d{4,6})/);
 
             if (slashMatch) {
-                return slashMatch[1] +
+                return (
+                    slashMatch[1] +
                     "/" +
-                    slashMatch[2].slice(-5);
+                    slashMatch[2].slice(-5)
+                );
             }
 
             const groups =
                 value.match(/\d+/g) || [];
 
-            if (groups.length === 0) {
+            if (groups.length < 2) {
                 return "";
             }
 
@@ -1441,14 +1413,11 @@
                 });
 
             if (topNumber && bottomNumber) {
-                return topNumber +
+                return (
+                    topNumber +
                     "/" +
-                    bottomNumber.slice(-5);
-            }
-
-            if (bottomNumber) {
-                return "4/" +
-                    bottomNumber.slice(-5);
+                    bottomNumber.slice(-5)
+                );
             }
 
             return "";
@@ -1481,7 +1450,9 @@
                 .join("");
         }
 
-        /* البحث عن التصريح */
+        /*
+         * توحيد رقم اللوحة للمقارنة
+         */
 
         function normalizePlate(plate) {
             return String(plate || "")
@@ -1489,6 +1460,10 @@
                 .replace(/\s+/g, "")
                 .replace(/\\/g, "/");
         }
+
+        /*
+         * البحث عن السيارة
+         */
 
         function findCar() {
             const plate =
@@ -1501,9 +1476,10 @@
             }
 
             const car = permits.find(function (permit) {
-                return normalizePlate(permit.plate) ===
-                    normalizePlate(plate) &&
-                    permit.status !== "ملغى";
+                return (
+                    normalizePlate(permit.plate) ===
+                    normalizePlate(plate)
+                );
             });
 
             if (!car) {
@@ -1519,7 +1495,7 @@
                     .value = "غير موجود";
 
                 alert(
-                    "لم يتم العثور على تصريح للوحة " +
+                    "لا يوجد تصريح مسجل للوحة: " +
                     plate
                 );
 
@@ -1538,7 +1514,9 @@
                 .value = getPermitStatus(car);
         }
 
-        /* تسجيل الدخول والخروج */
+        /*
+         * تسجيل حركة
+         */
 
         function recordMovement(type) {
             if (!selectedCar) {
@@ -1549,8 +1527,16 @@
                 return;
             }
 
-            if (getPermitStatus(selectedCar) === "منتهي") {
+            const status =
+                getPermitStatus(selectedCar);
+
+            if (status === "منتهي") {
                 alert("التصريح منتهي");
+                return;
+            }
+
+            if (status === "ملغى") {
+                alert("التصريح ملغى");
                 return;
             }
 
@@ -1564,7 +1550,7 @@
 
             addAudit(
                 "تسجيل " + type,
-                "المركبة " + selectedCar.plate
+                "اللوحة " + selectedCar.plate
             );
 
             saveData();
@@ -1573,11 +1559,14 @@
             alert("تم تسجيل " + type + " بنجاح");
         }
 
-        /* التصاريح */
+        /*
+         * التصاريح
+         */
 
         function savePermit() {
             const id =
-                document.getElementById("permitId").value;
+                document.getElementById("permitId")
+                    .value.trim();
 
             const plate =
                 document.getElementById("permitPlate")
@@ -1588,13 +1577,17 @@
                     .value.trim();
 
             if (!plate || !owner) {
-                alert("أدخل رقم اللوحة واسم صاحب المركبة");
+                alert(
+                    "يرجى إدخال رقم اللوحة واسم صاحب المركبة"
+                );
+
                 return;
             }
 
-            const data = {
+            const permitData = {
                 plate: plate,
                 owner: owner,
+
                 employee:
                     document.getElementById("permitEmployee")
                         .value.trim(),
@@ -1613,14 +1606,16 @@
             };
 
             if (id) {
-                const index = permits.findIndex(function (item) {
-                    return item.id === id;
-                });
+                const index = permits.findIndex(
+                    function (permit) {
+                        return permit.id === id;
+                    }
+                );
 
                 if (index !== -1) {
                     permits[index] = {
                         ...permits[index],
-                        ...data
+                        ...permitData
                     };
                 }
 
@@ -1630,9 +1625,13 @@
                 );
 
             } else {
+                /*
+                 * هنا يتم حفظ اللوحة التي أدخلتها أنت.
+                 * لا توجد لوحة ثابتة أو قديمة.
+                 */
                 permits.unshift({
                     id: "PR-" + Date.now(),
-                    ...data,
+                    ...permitData,
                     status: "ساري"
                 });
 
@@ -1646,46 +1645,50 @@
             clearPermitForm();
             renderAll();
 
-            alert("تم حفظ التصريح");
+            alert("تم حفظ التصريح بنجاح");
         }
 
         function editPermit(id) {
-            const permit = permits.find(function (item) {
-                return item.id === id;
-            });
+            const permit = permits.find(
+                function (item) {
+                    return item.id === id;
+                }
+            );
 
             if (!permit) {
                 return;
             }
 
-            document.getElementById("permitId").value =
-                permit.id;
+            document.getElementById("permitId")
+                .value = permit.id;
 
-            document.getElementById("permitPlate").value =
-                permit.plate;
+            document.getElementById("permitPlate")
+                .value = permit.plate;
 
-            document.getElementById("permitOwner").value =
-                permit.owner;
+            document.getElementById("permitOwner")
+                .value = permit.owner;
 
-            document.getElementById("permitEmployee").value =
-                permit.employee || "";
+            document.getElementById("permitEmployee")
+                .value = permit.employee || "";
 
-            document.getElementById("permitType").value =
-                permit.type || "تصريح موظف";
+            document.getElementById("permitType")
+                .value = permit.type || "تصريح موظف";
 
-            document.getElementById("permitEnd").value =
-                permit.end || "";
+            document.getElementById("permitEnd")
+                .value = permit.end || "";
 
-            document.getElementById("permitNotes").value =
-                permit.notes || "";
+            document.getElementById("permitNotes")
+                .value = permit.notes || "";
 
             showSection("permits");
         }
 
         function cancelPermit(id) {
-            const permit = permits.find(function (item) {
-                return item.id === id;
-            });
+            const permit = permits.find(
+                function (item) {
+                    return item.id === id;
+                }
+            );
 
             if (!permit) {
                 return;
@@ -1717,7 +1720,9 @@
             document.getElementById("permitNotes").value = "";
         }
 
-        /* حالة التصريح */
+        /*
+         * حالة التصريح
+         */
 
         function getPermitStatus(permit) {
             if (permit.status === "ملغى") {
@@ -1741,25 +1746,29 @@
                 return "green";
             }
 
-            if (status === "منتهي" ||
-                status === "ملغى") {
+            if (
+                status === "منتهي" ||
+                status === "ملغى"
+            ) {
                 return "red";
             }
 
             return "gold";
         }
 
-        /* العرض */
+        /*
+         * عرض التصاريح
+         */
 
         function renderPermits() {
             const table =
                 document.getElementById("permitTable");
 
-            if (!permits.length) {
+            if (permits.length === 0) {
                 table.innerHTML = `
                     <tr>
                         <td colspan="7" class="empty">
-                            لا توجد تصاريح
+                            لا توجد تصاريح مضافة
                         </td>
                     </tr>
                 `;
@@ -1767,43 +1776,79 @@
                 return;
             }
 
-            table.innerHTML = permits.map(function (permit) {
-                const status =
-                    getPermitStatus(permit);
+            table.innerHTML = permits.map(
+                function (permit) {
+                    const status =
+                        getPermitStatus(permit);
 
-                return `
-                    <tr>
-                        <td>${escapeHtml(permit.plate)}</td>
-                        <td>${escapeHtml(permit.owner)}</td>
-                        <td>${escapeHtml(permit.employee || "-")}</td>
-                        <td>${escapeHtml(permit.type || "-")}</td>
-                        <td>${escapeHtml(permit.end || "-")}</td>
-                        <td>
-                            <span class="status ${statusClass(status)}">
-                                ${status}
-                            </span>
-                        </td>
-                        <td>
-                            <button class="btn btn-gray"
-                                onclick="editPermit('${permit.id}')">
-                                تعديل
-                            </button>
+                    return `
+                        <tr>
+                            <td>
+                                ${escapeHtml(permit.plate)}
+                            </td>
 
-                            <button class="btn btn-danger"
-                                onclick="cancelPermit('${permit.id}')">
-                                إلغاء
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            }).join("");
+                            <td>
+                                ${escapeHtml(permit.owner)}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    permit.employee || "-"
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    permit.type || "-"
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    permit.end || "-"
+                                )}
+                            </td>
+
+                            <td>
+                                <span class="status ${
+                                    statusClass(status)
+                                }">
+                                    ${status}
+                                </span>
+                            </td>
+
+                            <td>
+                                <button
+                                    class="btn btn-gray"
+                                    onclick="editPermit(
+                                        '${permit.id}'
+                                    )">
+                                    تعديل
+                                </button>
+
+                                <button
+                                    class="btn btn-danger"
+                                    onclick="cancelPermit(
+                                        '${permit.id}'
+                                    )">
+                                    إلغاء
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }
+            ).join("");
         }
+
+        /*
+         * عرض الحركات
+         */
 
         function renderMovements() {
             const table =
                 document.getElementById("movementTable");
 
-            if (!movements.length) {
+            if (movements.length === 0) {
                 table.innerHTML = `
                     <tr>
                         <td colspan="5" class="empty">
@@ -1820,8 +1865,14 @@
                 .map(function (item) {
                     return `
                         <tr>
-                            <td>${escapeHtml(item.plate)}</td>
-                            <td>${escapeHtml(item.owner)}</td>
+                            <td>
+                                ${escapeHtml(item.plate)}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(item.owner)}
+                            </td>
+
                             <td>
                                 <span class="status ${
                                     item.type === "دخول"
@@ -1831,19 +1882,29 @@
                                     ${item.type}
                                 </span>
                             </td>
-                            <td>${escapeHtml(item.user)}</td>
-                            <td>${escapeHtml(item.date)}</td>
+
+                            <td>
+                                ${escapeHtml(item.user)}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(item.date)}
+                            </td>
                         </tr>
                     `;
                 })
                 .join("");
         }
 
+        /*
+         * عرض السجل
+         */
+
         function renderAudit() {
             const table =
                 document.getElementById("auditTable");
 
-            if (!audit.length) {
+            if (audit.length === 0) {
                 table.innerHTML = `
                     <tr>
                         <td colspan="4" class="empty">
@@ -1855,17 +1916,34 @@
                 return;
             }
 
-            table.innerHTML = audit.map(function (item) {
-                return `
-                    <tr>
-                        <td>${escapeHtml(item.user)}</td>
-                        <td>${escapeHtml(item.action)}</td>
-                        <td>${escapeHtml(item.details)}</td>
-                        <td>${escapeHtml(item.date)}</td>
-                    </tr>
-                `;
-            }).join("");
+            table.innerHTML = audit.map(
+                function (item) {
+                    return `
+                        <tr>
+                            <td>
+                                ${escapeHtml(item.user)}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(item.action)}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(item.details)}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(item.date)}
+                            </td>
+                        </tr>
+                    `;
+                }
+            ).join("");
         }
+
+        /*
+         * الإحصائيات
+         */
 
         function updateStats() {
             const entries =
@@ -1938,21 +2016,9 @@
             updateStats();
         }
 
-        /* السجل والتخزين */
-
-        function addAudit(action, details) {
-            audit.unshift({
-                user: currentUser
-                    ? currentUser.name
-                    : "النظام",
-
-                action: action,
-                details: details,
-                date: new Date().toLocaleString("ar-KW")
-            });
-
-            saveData();
-        }
+        /*
+         * التخزين والسجل
+         */
 
         function saveData() {
             localStorage.setItem(
@@ -1971,8 +2037,32 @@
             );
         }
 
+        function addAudit(action, details) {
+            audit.unshift({
+                user: currentUser
+                    ? currentUser.name
+                    : "النظام",
+
+                action: action,
+                details: details,
+                date: new Date().toLocaleString("ar-KW")
+            });
+
+            saveData();
+        }
+
+        function clearAudit() {
+            if (!confirm("هل تريد مسح السجل؟")) {
+                return;
+            }
+
+            audit = [];
+            saveData();
+            renderAudit();
+        }
+
         function exportAudit() {
-            if (!audit.length) {
+            if (audit.length === 0) {
                 alert("لا يوجد سجل لتصديره");
                 return;
             }
@@ -2005,37 +2095,6 @@
             URL.revokeObjectURL(url);
         }
 
-        function clearAudit() {
-            if (!confirm("هل تريد مسح السجل؟")) {
-                return;
-            }
-
-            audit = [];
-            saveData();
-            renderAudit();
-        }
-
-        function createDemoPermit() {
-            if (permits.length > 0) {
-                return;
-            }
-
-            permits = [
-                {
-                    id: "PR-1001",
-                    plate: "4/66759",
-                    owner: "محمد عبدالله",
-                    employee: "EMP-1025",
-                    type: "تصريح موظف",
-                    end: "2026-12-31",
-                    notes: "",
-                    status: "ساري"
-                }
-            ];
-
-            saveData();
-        }
-
         function escapeHtml(value) {
             return String(value || "")
                 .replace(/&/g, "&amp;")
@@ -2047,4 +2106,5 @@
     </script>
 
 </body>
+
 </html>
