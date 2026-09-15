@@ -1,0 +1,2089 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>نظام أمن البوابات</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --dark: #0c1f3a;
+            --dark-2: #132f50;
+            --blue: #386aa1;
+            --blue-light: #4d84bd;
+            --gray: #778590;
+            --white: #ffffff;
+            --bg: #eef0f2;
+            --green: #169667;
+            --red: #d34550;
+            --gold: #c49a3b;
+            --shadow: 0 18px 45px rgba(0, 0, 0, .22);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: var(--dark);
+            background:
+                radial-gradient(circle at 50% 50%, transparent 0 20%, rgba(255,255,255,.035) 20.1% 20.3%, transparent 20.4% 34%, rgba(255,255,255,.04) 34.1% 34.3%, transparent 34.4%),
+                radial-gradient(circle at 50% 50%, transparent 0 39%, rgba(255,255,255,.045) 39.1% 39.3%, transparent 39.4% 53%, rgba(255,255,255,.04) 53.1% 53.3%, transparent 53.4%),
+                linear-gradient(135deg, #0c2039, #102a4a 48%, #102c47);
+            font-family: "Cairo", sans-serif;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px 18px;
+            color: #3e4c59;
+            background: #fff;
+            border: 1px solid #dce5ed;
+            border-radius: 13px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--blue-light);
+            box-shadow: 0 0 0 3px rgba(56, 106, 161, .12);
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* صفحة البداية */
+
+        .landing {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 25px;
+        }
+
+        .landing-card {
+            position: relative;
+            width: 100%;
+            max-width: 940px;
+            min-height: 730px;
+            padding: 50px 65px 55px;
+            overflow: hidden;
+            text-align: center;
+            background: rgba(245, 246, 247, .97);
+            border: 1px solid rgba(255,255,255,.8);
+            border-radius: 38px;
+            box-shadow:
+                0 0 0 16px rgba(255,255,255,.035),
+                var(--shadow);
+        }
+
+        .landing-card::before,
+        .landing-card::after {
+            position: absolute;
+            content: "";
+            pointer-events: none;
+            border: 1px solid rgba(56, 106, 161, .11);
+            border-radius: 50%;
+        }
+
+        .landing-card::before {
+            top: -180px;
+            right: -160px;
+            width: 430px;
+            height: 430px;
+        }
+
+        .landing-card::after {
+            bottom: -220px;
+            left: -190px;
+            width: 480px;
+            height: 480px;
+        }
+
+        .logo-wrap {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 230px;
+            height: 230px;
+            margin: 0 auto 24px;
+        }
+
+        .logo-wrap::before {
+            position: absolute;
+            inset: 0;
+            content: "";
+            background: radial-gradient(circle, rgba(255,255,255,.95), transparent 67%);
+        }
+
+        .logo-wrap img {
+            position: relative;
+            z-index: 1;
+            width: 215px;
+            height: 215px;
+            object-fit: contain;
+        }
+
+        .landing-card h1 {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 10px;
+            color: #315a8d;
+            font-size: clamp(30px, 5vw, 51px);
+            font-weight: 800;
+        }
+
+        .landing-subtitle {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 38px;
+            color: #7c8994;
+            font-size: clamp(16px, 2.3vw, 26px);
+        }
+
+        .entry-buttons {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            max-width: 810px;
+            margin: 0 auto;
+        }
+
+        .entry-btn {
+            min-height: 93px;
+            padding: 15px 12px;
+            color: white;
+            background: linear-gradient(135deg, #77848d, #919da5);
+            border: 0;
+            border-radius: 24px;
+            box-shadow: 0 14px 27px rgba(44, 63, 81, .2);
+            font-size: clamp(16px, 2vw, 23px);
+            transition: .25s ease;
+        }
+
+        .entry-btn:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 32px rgba(44, 63, 81, .3);
+        }
+
+        .entry-btn.permits {
+            background: linear-gradient(135deg, #315c91, #4e83ba);
+        }
+
+        .entry-btn.admin {
+            background: linear-gradient(135deg, #687781, #8c99a1);
+        }
+
+        .entry-icon {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 25px;
+        }
+
+        .landing-footer {
+            position: relative;
+            z-index: 1;
+            margin-top: 35px;
+            color: #9aa5ad;
+            font-size: 11px;
+        }
+
+        /* نافذة الدخول */
+
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(5, 19, 37, .78);
+            backdrop-filter: blur(7px);
+        }
+
+        .login-overlay.show {
+            display: flex;
+        }
+
+        .login-box {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            padding: 38px 35px;
+            text-align: center;
+            background: #f3f5f6;
+            border: 1px solid white;
+            border-radius: 27px;
+            box-shadow: 0 25px 65px rgba(0,0,0,.35);
+            animation: popup .25s ease;
+        }
+
+        @keyframes popup {
+            from {
+                opacity: 0;
+                transform: scale(.92) translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .close-login {
+            position: absolute;
+            top: 15px;
+            left: 17px;
+            width: 34px;
+            height: 34px;
+            color: #697985;
+            background: #e3e8eb;
+            border: 0;
+            border-radius: 50%;
+            font-size: 20px;
+        }
+
+        .login-mini-logo {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 10px;
+            object-fit: contain;
+        }
+
+        .login-box h2 {
+            margin-bottom: 5px;
+            color: #315a8d;
+            font-size: 25px;
+        }
+
+        .login-box > p {
+            margin-bottom: 23px;
+            color: #7c8994;
+            font-size: 12px;
+        }
+
+        .login-form {
+            text-align: right;
+        }
+
+        .login-form label {
+            display: block;
+            margin: 14px 4px 6px;
+            color: #315a8d;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .login-form input {
+            height: 58px;
+            font-size: 16px;
+        }
+
+        .login-btn {
+            width: 100%;
+            margin-top: 24px;
+            padding: 16px;
+            color: white;
+            background: linear-gradient(135deg, #315d92, #4c83ba);
+            border: 0;
+            border-radius: 15px;
+            box-shadow: 0 12px 22px rgba(49, 93, 146, .25);
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .login-error {
+            display: none;
+            margin-top: 14px;
+            padding: 10px;
+            color: #b12632;
+            background: #ffecee;
+            border-radius: 9px;
+            font-size: 12px;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        /* لوحة التحكم */
+
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            background: #f3f7fb;
+        }
+
+        .dashboard.show {
+            display: flex;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 50;
+            width: 270px;
+            padding: 25px 17px;
+            color: white;
+            background: linear-gradient(155deg, #0b203a, #163e63);
+        }
+
+        .side-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 8px 24px;
+            border-bottom: 1px solid rgba(255,255,255,.15);
+        }
+
+        .side-brand img {
+            width: 55px;
+            height: 55px;
+            padding: 4px;
+            background: white;
+            border-radius: 50%;
+            object-fit: contain;
+        }
+
+        .side-brand strong {
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .side-title {
+            margin: 30px 10px 10px;
+            color: #9db6cf;
+            font-size: 10px;
+        }
+
+        .side-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 8px;
+            padding: 14px;
+            color: #d3e0eb;
+            background: transparent;
+            border: 0;
+            border-radius: 12px;
+            text-align: right;
+            font-size: 12px;
+        }
+
+        .side-btn:hover,
+        .side-btn.active {
+            color: white;
+            background: rgba(255,255,255,.13);
+        }
+
+        .side-btn span:first-child {
+            width: 25px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .dashboard-main {
+            flex: 1;
+            min-width: 0;
+            margin-right: 270px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 82px;
+            padding: 17px 35px;
+            background: white;
+            border-bottom: 1px solid #e5edf4;
+        }
+
+        .header-title h1 {
+            color: var(--dark);
+            font-size: 22px;
+        }
+
+        .header-title p {
+            margin-top: 3px;
+            color: #8090a0;
+            font-size: 11px;
+        }
+
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--dark);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .avatar {
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            color: white;
+            background: linear-gradient(135deg, #315c91, #4c83ba);
+            border-radius: 12px;
+        }
+
+        .dashboard-content {
+            padding: 30px 35px;
+        }
+
+        .dashboard-page {
+            display: none;
+        }
+
+        .dashboard-page.active {
+            display: block;
+        }
+
+        .welcome {
+            margin-bottom: 23px;
+            padding: 29px;
+            color: white;
+            background: linear-gradient(120deg, #0c2747, #3f78af);
+            border-radius: 20px;
+            box-shadow: 0 10px 28px rgba(20, 57, 91, .15);
+        }
+
+        .welcome h2 {
+            margin-bottom: 7px;
+            font-size: 25px;
+        }
+
+        .welcome p {
+            color: #d8e7f3;
+            font-size: 12px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 21px;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 17px;
+            background: white;
+            border: 1px solid #e3ebf2;
+            border-radius: 15px;
+            box-shadow: 0 5px 17px rgba(0,0,0,.025);
+        }
+
+        .stat-icon {
+            display: grid;
+            place-items: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 13px;
+            font-size: 21px;
+        }
+
+        .stat-icon.blue {
+            color: #23669d;
+            background: #e5f2fb;
+        }
+
+        .stat-icon.green {
+            color: #11845a;
+            background: #e2f7ed;
+        }
+
+        .stat-icon.gold {
+            color: #936d09;
+            background: #fff3ce;
+        }
+
+        .stat-icon.red {
+            color: #bd303b;
+            background: #ffe8eb;
+        }
+
+        .stat h3 {
+            color: var(--dark);
+            font-size: 22px;
+        }
+
+        .stat p {
+            color: #81909e;
+            font-size: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            padding: 22px;
+            background: white;
+            border: 1px solid #e3ebf2;
+            border-radius: 17px;
+            box-shadow: 0 5px 17px rgba(0,0,0,.025);
+        }
+
+        .card.full {
+            grid-column: 1 / -1;
+            margin-top: 20px;
+        }
+
+        .card h3 {
+            margin-bottom: 18px;
+            color: var(--dark);
+            font-size: 16px;
+        }
+
+        .field {
+            margin-bottom: 14px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 6px;
+            color: #607181;
+            font-size: 11px;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-top: 16px;
+        }
+
+        .btn {
+            padding: 11px 17px;
+            color: white;
+            border: 0;
+            border-radius: 9px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .btn-primary {
+            background: var(--blue);
+        }
+
+        .btn-success {
+            background: var(--green);
+        }
+
+        .btn-danger {
+            background: var(--red);
+        }
+
+        .btn-gray {
+            color: #456278;
+            background: #edf2f5;
+        }
+
+        .camera-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            min-height: 260px;
+            padding: 20px;
+            color: #7b8c9b;
+            background: #f2f8fc;
+            border: 2px dashed #c3d9e7;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .camera-box .camera-symbol {
+            display: grid;
+            place-items: center;
+            width: 65px;
+            height: 65px;
+            margin-bottom: 13px;
+            color: #2e6e9f;
+            background: #dceefa;
+            border-radius: 19px;
+            font-size: 29px;
+        }
+
+        .camera-box p {
+            margin: 7px 0 15px;
+            font-size: 11px;
+        }
+
+        .search-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 9px;
+            margin-bottom: 16px;
+        }
+
+        .field-builder {
+            margin-top: 18px;
+            padding: 15px;
+            background: #f8fbfd;
+            border: 1px dashed #c7dce9;
+            border-radius: 12px;
+        }
+
+        .field-builder h4 {
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-size: 12px;
+        }
+
+        .extra-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 38px;
+            gap: 7px;
+            margin-bottom: 8px;
+        }
+
+        .extra-row button {
+            color: white;
+            background: var(--red);
+            border: 0;
+            border-radius: 8px;
+        }
+
+        .table-card {
+            margin-top: 20px;
+        }
+
+        .table-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 17px;
+        }
+
+        .table-header h3 {
+            margin: 0;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 740px;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: 12px;
+            color: #768899;
+            background: #f5f8fa;
+            text-align: right;
+            font-size: 10px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #edf1f4;
+            font-size: 11px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .status.green {
+            color: #087b4a;
+            background: #e1f7ec;
+        }
+
+        .status.red {
+            color: #ad2935;
+            background: #ffe8eb;
+        }
+
+        .status.gold {
+            color: #8a680b;
+            background: #fff1c9;
+        }
+
+        .empty {
+            padding: 25px;
+            color: #8998a6;
+            text-align: center;
+        }
+
+        .mobile-menu {
+            display: none;
+        }
+
+        @media (max-width: 850px) {
+            .landing-card {
+                min-height: auto;
+                padding: 35px 25px 40px;
+                border-radius: 28px;
+            }
+
+            .logo-wrap {
+                width: 175px;
+                height: 175px;
+            }
+
+            .logo-wrap img {
+                width: 165px;
+                height: 165px;
+            }
+
+            .entry-buttons {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+
+            .entry-btn {
+                min-height: 70px;
+            }
+
+            .sidebar {
+                transform: translateX(100%);
+                transition: .3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .dashboard-main {
+                margin-right: 0;
+            }
+
+            .mobile-menu {
+                display: grid;
+                place-items: center;
+                width: 40px;
+                height: 40px;
+                margin-left: 12px;
+                color: white;
+                background: var(--dark);
+                border: 0;
+                border-radius: 9px;
+                font-size: 19px;
+            }
+
+            .dashboard-header {
+                padding: 14px 17px;
+            }
+
+            .header-title h1 {
+                font-size: 17px;
+            }
+
+            .header-title p {
+                display: none;
+            }
+
+            .dashboard-content {
+                padding: 20px 14px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .landing {
+                padding: 12px;
+            }
+
+            .landing-card {
+                padding: 28px 18px 31px;
+            }
+
+            .landing-card h1 {
+                font-size: 29px;
+            }
+
+            .landing-subtitle {
+                font-size: 14px;
+                margin-bottom: 25px;
+            }
+
+            .login-box {
+                padding: 32px 21px;
+            }
+
+            .user-name {
+                display: none;
+            }
+
+            .stats {
+                gap: 9px;
+            }
+
+            .stat {
+                padding: 12px 9px;
+                gap: 7px;
+            }
+
+            .stat-icon {
+                width: 37px;
+                height: 37px;
+                font-size: 16px;
+            }
+
+            .stat h3 {
+                font-size: 18px;
+            }
+
+            .stat p {
+                font-size: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- واجهة البداية -->
+    <section class="landing" id="landingPage">
+
+        <div class="landing-card">
+
+            <div class="logo-wrap">
+                <img src="logo.png" alt="شعار وزارة الداخلية">
+            </div>
+
+            <h1>نظام أمن البوابات</h1>
+
+            <p class="landing-subtitle">
+                أدخل اسم المستخدم وكلمة المرور لمسؤول التصاريح
+            </p>
+
+            <div class="entry-buttons">
+
+                <button class="entry-btn security" onclick="openLogin('security')">
+                    <span class="entry-icon">🛡️</span>
+                    دخول الأمن
+                </button>
+
+                <button class="entry-btn permits" onclick="openLogin('permits')">
+                    <span class="entry-icon">📋</span>
+                    دخول التصاريح
+                </button>
+
+                <button class="entry-btn admin" onclick="openLogin('admin')">
+                    <span class="entry-icon">📊</span>
+                    دخول الإدارة
+                </button>
+
+            </div>
+
+            <p class="landing-footer">
+                نظام إلكتروني لإدارة أمن البوابات والتصاريح
+            </p>
+
+        </div>
+    </section>
+
+    <!-- نافذة الدخول -->
+    <div class="login-overlay" id="loginOverlay">
+
+        <div class="login-box">
+
+            <button class="close-login" onclick="closeLogin()">×</button>
+
+            <img class="login-mini-logo" src="logo.png" alt="الشعار">
+
+            <h2 id="loginTitle">دخول الأمن</h2>
+
+            <p id="loginDescription">
+                أدخل بيانات الدخول للوصول إلى النظام
+            </p>
+
+            <form class="login-form" onsubmit="event.preventDefault(); login();">
+
+                <label for="username">اسم المستخدم</label>
+                <input id="username" type="text" placeholder="أدخل اسم المستخدم" autocomplete="username">
+
+                <label for="password">كلمة المرور</label>
+                <input id="password" type="password" placeholder="أدخل كلمة المرور" autocomplete="current-password">
+
+                <div class="login-error" id="loginError">
+                    بيانات الدخول غير صحيحة
+                </div>
+
+                <button class="login-btn" type="submit">
+                    دخول النظام
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- لوحة النظام -->
+    <section class="dashboard" id="dashboard">
+
+        <aside class="sidebar" id="sidebar">
+
+            <div class="side-brand">
+                <img src="logo.png" alt="الشعار">
+
+                <strong>
+                    نظام أمن<br>
+                    البوابات
+                </strong>
+            </div>
+
+            <div class="side-title">القائمة الرئيسية</div>
+
+            <button class="side-btn active" data-section="security" onclick="showSection('security')">
+                <span>🛡️</span>
+                <span>بوابة الأمن</span>
+            </button>
+
+            <button class="side-btn" data-section="permits" onclick="showSection('permits')">
+                <span>📋</span>
+                <span>التصاريح</span>
+            </button>
+
+            <button class="side-btn" data-section="admin" onclick="showSection('admin')">
+                <span>📊</span>
+                <span>الإدارة والسجل</span>
+            </button>
+
+            <div class="side-title">النظام</div>
+
+            <button class="side-btn" onclick="logout()">
+                <span>🚪</span>
+                <span>تسجيل الخروج</span>
+            </button>
+        </aside>
+
+        <main class="dashboard-main">
+
+            <header class="dashboard-header">
+
+                <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
+
+                <div class="header-title">
+                    <h1 id="dashboardTitle">بوابة الأمن</h1>
+                    <p id="dashboardSubtitle">تسجيل حركة دخول وخروج المركبات</p>
+                </div>
+
+                <div class="header-user">
+                    <span class="user-name" id="currentUser">المستخدم</span>
+                    <span class="avatar" id="userAvatar">م</span>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+
+                <!-- الأمن -->
+                <section class="dashboard-page active" id="securitySection">
+
+                    <div class="welcome">
+                        <h2>مرحباً بك في بوابة الأمن</h2>
+                        <p>
+                            تصوير المركبة والبحث عن بيانات صاحبها وتسجيل الدخول والخروج.
+                        </p>
+                    </div>
+
+                    <div class="stats">
+
+                        <div class="stat">
+                            <span class="stat-icon blue">🚗</span>
+                            <div>
+                                <h3 id="insideCount">0</h3>
+                                <p>المركبات داخل الموقع</p>
+                            </div>
+                        </div>
+
+                        <div class="stat">
+                            <span class="stat-icon green">↘</span>
+                            <div>
+                                <h3 id="entryCount">0</h3>
+                                <p>حالات الدخول</p>
+                            </div>
+                        </div>
+
+                        <div class="stat">
+                            <span class="stat-icon gold">↗</span>
+                            <div>
+                                <h3 id="exitCount">0</h3>
+                                <p>حالات الخروج</p>
+                            </div>
+                        </div>
+
+                        <div class="stat">
+                            <span class="stat-icon red">⚠</span>
+                            <div>
+                                <h3 id="expiredCount">0</h3>
+                                <p>تصاريح منتهية</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="grid">
+
+                        <div class="card">
+                            <h3>تصوير المركبة</h3>
+
+                            <div class="camera-box" id="cameraBox">
+                                <div class="camera-symbol">📷</div>
+                                <strong>لم يتم تصوير المركبة</strong>
+                                <p>اضغط على الزر لفتح كاميرا الجوال</p>
+
+                                <button class="btn btn-primary" onclick="openCamera()">
+                                    فتح الكاميرا
+                                </button>
+
+                                <input
+                                    id="cameraInput"
+                                    type="file"
+                                    accept="image/*"
+                                    capture="environment"
+                                    hidden
+                                >
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>بيانات المركبة</h3>
+
+                            <div class="field">
+                                <label>رقم اللوحة</label>
+
+                                <div class="search-row">
+                                    <input id="securityPlate" type="text" placeholder="أدخل رقم اللوحة">
+
+                                    <button class="btn btn-primary" onclick="findCar()">
+                                        بحث
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label>اسم صاحب المركبة</label>
+                                <input id="securityOwner" type="text" readonly>
+                            </div>
+
+                            <div class="field">
+                                <label>رقم الموظف</label>
+                                <input id="securityEmployee" type="text" readonly>
+                            </div>
+
+                            <div class="field">
+                                <label>حالة التصريح</label>
+                                <input id="securityStatus" type="text" readonly>
+                            </div>
+
+                            <div class="button-row">
+                                <button class="btn btn-success" onclick="recordMovement('دخول')">
+                                    تسجيل دخول
+                                </button>
+
+                                <button class="btn btn-danger" onclick="recordMovement('خروج')">
+                                    تسجيل خروج
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card table-card">
+                        <div class="table-header">
+                            <h3>آخر حركات البوابة</h3>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>اللوحة</th>
+                                        <th>صاحب المركبة</th>
+                                        <th>الحركة</th>
+                                        <th>المستخدم</th>
+                                        <th>التاريخ</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="movementTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- التصاريح -->
+                <section class="dashboard-page" id="permitsSection">
+
+                    <div class="welcome">
+                        <h2>إدارة التصاريح</h2>
+                        <p>
+                            إضافة بيانات الموظفين والمركبات وتعديل أو إلغاء التصاريح.
+                        </p>
+                    </div>
+
+                    <div class="card">
+
+                        <h3 id="permitFormTitle">إضافة تصريح جديد</h3>
+
+                        <input id="permitId" type="hidden">
+
+                        <div class="grid">
+
+                            <div>
+                                <div class="field">
+                                    <label>رقم اللوحة *</label>
+                                    <input id="permitPlate" type="text" placeholder="رقم اللوحة">
+                                </div>
+
+                                <div class="field">
+                                    <label>اسم صاحب المركبة *</label>
+                                    <input id="permitOwner" type="text" placeholder="اسم الموظف">
+                                </div>
+
+                                <div class="field">
+                                    <label>رقم الموظف</label>
+                                    <input id="permitEmployee" type="text" placeholder="رقم الموظف">
+                                </div>
+
+                                <div class="field">
+                                    <label>رقم الهاتف</label>
+                                    <input id="permitPhone" type="text" placeholder="رقم الهاتف">
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="field">
+                                    <label>نوع التصريح</label>
+
+                                    <select id="permitType">
+                                        <option>تصريح موظف</option>
+                                        <option>تصريح زائر</option>
+                                        <option>تصريح مقاول</option>
+                                        <option>تصريح مؤقت</option>
+                                    </select>
+                                </div>
+
+                                <div class="field">
+                                    <label>تاريخ بداية التصريح</label>
+                                    <input id="permitStart" type="date">
+                                </div>
+
+                                <div class="field">
+                                    <label>تاريخ انتهاء التصريح</label>
+                                    <input id="permitEnd" type="date">
+                                </div>
+
+                                <div class="field">
+                                    <label>ملاحظات</label>
+                                    <textarea id="permitNotes" placeholder="ملاحظات إضافية"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="field-builder">
+                            <h4>بيانات إضافية للموظف</h4>
+
+                            <div id="extraFields"></div>
+
+                            <button class="btn btn-gray" onclick="addExtraField()">
+                                + إضافة خانة جديدة
+                            </button>
+                        </div>
+
+                        <div class="button-row">
+                            <button class="btn btn-primary" onclick="savePermit()">
+                                حفظ التصريح
+                            </button>
+
+                            <button class="btn btn-gray" onclick="clearPermitForm()">
+                                تفريغ الحقول
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="card table-card">
+
+                        <div class="table-header">
+                            <h3>قائمة التصاريح</h3>
+                            <span id="permitCount">0 تصريح</span>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>رقم التصريح</th>
+                                        <th>اللوحة</th>
+                                        <th>صاحب المركبة</th>
+                                        <th>رقم الموظف</th>
+                                        <th>النوع</th>
+                                        <th>الانتهاء</th>
+                                        <th>الحالة</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="permitTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- الإدارة -->
+                <section class="dashboard-page" id="adminSection">
+
+                    <div class="welcome">
+                        <h2>الصفحة الإدارية</h2>
+                        <p>
+                            مراقبة حركة البوابة وجميع عمليات الإضافة والتعديل والإلغاء.
+                        </p>
+                    </div>
+
+                    <div class="stats">
+
+                        <div class="stat">
+                            <span class="stat-icon blue">📋</span>
+                            <div>
+                                <h3 id="adminPermits">0</h3>
+                                <p>إجمالي التصاريح</p>
+                            </div>
+                        </div>
+
+                        <div class="stat">
+                            <span class="stat-icon green">🚗</span>
+                            <div>
+                                <h3 id="adminMovements">0</h3>
+                                <p>حركات البوابة</p>
+                            </div>
+                        </div>
+
+                        <div class="stat">
+                            <span class="stat-icon gold">✅</span>
+                            <div>
+                                <h3 id="adminActive">0</h3>
+                                <p>تصاريح سارية</p>
+                            </div>
+                        </div>
+
+                        <div class="stat">
+                            <span class="stat-icon red">❌</span>
+                            <div>
+                                <h3 id="adminCancelled">0</h3>
+                                <p>تصاريح ملغاة</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card table-card">
+
+                        <div class="table-header">
+                            <h3>سجل العمليات</h3>
+
+                            <div class="button-row" style="margin:0;">
+                                <button class="btn btn-success" onclick="exportAudit()">
+                                    تصدير السجل
+                                </button>
+
+                                <button class="btn btn-danger" onclick="clearAudit()">
+                                    مسح السجل
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>المستخدم</th>
+                                        <th>العملية</th>
+                                        <th>التفاصيل</th>
+                                        <th>التاريخ والوقت</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="auditTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </section>
+
+            </div>
+        </main>
+    </section>
+
+    <script>
+        const users = {
+            security: [
+                {
+                    username: "علي",
+                    password: "1234",
+                    name: "علي",
+                    role: "موظف الأمن"
+                },
+                {
+                    username: "عزيز",
+                    password: "5678",
+                    name: "عزيز",
+                    role: "موظف الأمن"
+                }
+            ],
+
+            permits: [
+                {
+                    username: "تصاريح",
+                    password: "2468",
+                    name: "مسؤول التصاريح",
+                    role: "إدارة التصاريح"
+                }
+            ],
+
+            admin: [
+                {
+                    username: "admin",
+                    password: "9999",
+                    name: "مدير النظام",
+                    role: "الإدارة"
+                }
+            ]
+        };
+
+        const pageInfo = {
+            security: {
+                title: "دخول الأمن",
+                description: "تسجيل حركة دخول وخروج المركبات"
+            },
+            permits: {
+                title: "دخول التصاريح",
+                description: "إدارة تصاريح المركبات والموظفين"
+            },
+            admin: {
+                title: "دخول الإدارة",
+                description: "مراقبة السجلات وحركة البوابة"
+            }
+        };
+
+        let selectedLoginType = "";
+        let currentUser = null;
+        let selectedCar = null;
+
+        let permits = JSON.parse(localStorage.getItem("gatePermits") || "[]");
+        let movements = JSON.parse(localStorage.getItem("gateMovements") || "[]");
+        let audit = JSON.parse(localStorage.getItem("gateAudit") || "[]");
+
+        window.addEventListener("DOMContentLoaded", function () {
+            loadDemoPermit();
+            renderAll();
+        });
+
+        function loadDemoPermit() {
+            if (permits.length > 0) {
+                return;
+            }
+
+            permits = [
+                {
+                    id: "PR-" + Date.now(),
+                    plate: "45821",
+                    owner: "محمد عبدالله",
+                    employee: "EMP-1025",
+                    phone: "55551234",
+                    type: "تصريح موظف",
+                    start: "2025-01-01",
+                    end: "2025-12-31",
+                    notes: "تصريح دائم",
+                    extra: [],
+                    status: "ساري",
+                    createdBy: "مدير النظام",
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            saveData();
+        }
+
+        function openLogin(type) {
+            selectedLoginType = type;
+
+            document.getElementById("loginTitle").textContent =
+                pageInfo[type].title;
+
+            document.getElementById("loginDescription").textContent =
+                pageInfo[type].description;
+
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+            document.getElementById("loginError").classList.remove("show");
+
+            document.getElementById("loginOverlay").classList.add("show");
+
+            setTimeout(function () {
+                document.getElementById("username").focus();
+            }, 200);
+        }
+
+        function closeLogin() {
+            document.getElementById("loginOverlay").classList.remove("show");
+        }
+
+        function login() {
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            const account = users[selectedLoginType].find(function (item) {
+                return item.username === username &&
+                    item.password === password;
+            });
+
+            if (!account) {
+                document.getElementById("loginError").classList.add("show");
+                return;
+            }
+
+            currentUser = account;
+
+            document.getElementById("landingPage").style.display = "none";
+            document.getElementById("loginOverlay").classList.remove("show");
+            document.getElementById("dashboard").classList.add("show");
+
+            document.getElementById("currentUser").textContent =
+                currentUser.name;
+
+            document.getElementById("userAvatar").textContent =
+                currentUser.name.charAt(0);
+
+            showSection(selectedLoginType);
+        }
+
+        function logout() {
+            currentUser = null;
+            selectedCar = null;
+
+            document.getElementById("dashboard").classList.remove("show");
+            document.getElementById("landingPage").style.display = "flex";
+        }
+
+        function showSection(section) {
+            document.querySelectorAll(".dashboard-page").forEach(function (item) {
+                item.classList.remove("active");
+            });
+
+            const selectedSection =
+                document.getElementById(section + "Section");
+
+            if (selectedSection) {
+                selectedSection.classList.add("active");
+            }
+
+            document.querySelectorAll(".side-btn[data-section]").forEach(function (button) {
+                button.classList.remove("active");
+            });
+
+            const activeButton =
+                document.querySelector(`.side-btn[data-section="${section}"]`);
+
+            if (activeButton) {
+                activeButton.classList.add("active");
+            }
+
+            const titles = {
+                security: ["بوابة الأمن", "تسجيل حركة دخول وخروج المركبات"],
+                permits: ["إدارة التصاريح", "إضافة وتعديل وإلغاء التصاريح"],
+                admin: ["الصفحة الإدارية", "مراقبة حركة البوابة والسجلات"]
+            };
+
+            document.getElementById("dashboardTitle").textContent =
+                titles[section][0];
+
+            document.getElementById("dashboardSubtitle").textContent =
+                titles[section][1];
+
+            renderAll();
+            closeSidebar();
+        }
+
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("open");
+        }
+
+        function closeSidebar() {
+            document.getElementById("sidebar").classList.remove("open");
+        }
+
+        function openCamera() {
+            document.getElementById("cameraInput").click();
+        }
+
+        document.getElementById("cameraInput").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            const url = URL.createObjectURL(file);
+
+            document.getElementById("cameraBox").innerHTML = `
+                <img src="${url}" style="max-width:100%;max-height:170px;border-radius:12px;object-fit:contain;">
+                <strong style="margin-top:10px;">تم التقاط صورة المركبة</strong>
+                <button class="btn btn-gray" style="margin-top:12px;" onclick="openCamera()">
+                    إعادة التصوير
+                </button>
+            `;
+        });
+
+        function findCar() {
+            const plate = document.getElementById("securityPlate").value.trim();
+
+            if (!plate) {
+                alert("يرجى إدخال رقم اللوحة");
+                return;
+            }
+
+            const car = permits.find(function (item) {
+                return item.plate === plate && item.status !== "ملغى";
+            });
+
+            if (!car) {
+                selectedCar = null;
+
+                document.getElementById("securityOwner").value = "";
+                document.getElementById("securityEmployee").value = "";
+                document.getElementById("securityStatus").value = "غير موجود";
+
+                alert("لم يتم العثور على تصريح لهذه المركبة");
+                return;
+            }
+
+            selectedCar = car;
+
+            document.getElementById("securityOwner").value = car.owner;
+            document.getElementById("securityEmployee").value = car.employee || "";
+            document.getElementById("securityStatus").value = getStatus(car);
+        }
+
+        function recordMovement(type) {
+            if (!selectedCar) {
+                findCar();
+            }
+
+            if (!selectedCar) {
+                return;
+            }
+
+            if (getStatus(selectedCar) === "منتهي") {
+                alert("لا يمكن تسجيل الحركة، التصريح منتهي");
+                return;
+            }
+
+            const movement = {
+                plate: selectedCar.plate,
+                owner: selectedCar.owner,
+                type: type,
+                user: currentUser.name,
+                date: new Date().toLocaleString("ar-KW")
+            };
+
+            movements.unshift(movement);
+
+            addAudit(
+                type === "دخول" ? "تسجيل دخول" : "تسجيل خروج",
+                `المركبة ${selectedCar.plate} - ${selectedCar.owner}`
+            );
+
+            saveData();
+            renderAll();
+
+            alert("تم تسجيل " + type + " بنجاح");
+        }
+
+        function addExtraField(name = "", value = "") {
+            const container = document.getElementById("extraFields");
+            const row = document.createElement("div");
+
+            row.className = "extra-row";
+
+            row.innerHTML = `
+                <input type="text" placeholder="اسم الخانة" value="${escapeHtml(name)}">
+                <input type="text" placeholder="القيمة" value="${escapeHtml(value)}">
+                <button onclick="this.parentElement.remove()">×</button>
+            `;
+
+            container.appendChild(row);
+        }
+
+        function collectExtraFields() {
+            const result = [];
+
+            document.querySelectorAll(".extra-row").forEach(function (row) {
+                const inputs = row.querySelectorAll("input");
+
+                if (inputs[0].value.trim()) {
+                    result.push({
+                        name: inputs[0].value.trim(),
+                        value: inputs[1].value.trim()
+                    });
+                }
+            });
+
+            return result;
+        }
+
+        function savePermit() {
+            const id = document.getElementById("permitId").value;
+            const plate = document.getElementById("permitPlate").value.trim();
+            const owner = document.getElementById("permitOwner").value.trim();
+
+            if (!plate || !owner) {
+                alert("يرجى إدخال رقم اللوحة واسم صاحب المركبة");
+                return;
+            }
+
+            const data = {
+                plate: plate,
+                owner: owner,
+                employee: document.getElementById("permitEmployee").value.trim(),
+                phone: document.getElementById("permitPhone").value.trim(),
+                type: document.getElementById("permitType").value,
+                start: document.getElementById("permitStart").value,
+                end: document.getElementById("permitEnd").value,
+                notes: document.getElementById("permitNotes").value.trim(),
+                extra: collectExtraFields()
+            };
+
+            if (id) {
+                const index = permits.findIndex(function (item) {
+                    return item.id === id;
+                });
+
+                if (index !== -1) {
+                    permits[index] = {
+                        ...permits[index],
+                        ...data
+                    };
+
+                    addAudit(
+                        "تعديل تصريح",
+                        `تعديل تصريح المركبة ${data.plate} - ${data.owner}`
+                    );
+                }
+            } else {
+                permits.unshift({
+                    id: "PR-" + Date.now(),
+                    ...data,
+                    status: "ساري",
+                    createdBy: currentUser.name,
+                    createdAt: new Date().toISOString()
+                });
+
+                addAudit(
+                    "إضافة تصريح",
+                    `إضافة تصريح المركبة ${data.plate} - ${data.owner}`
+                );
+            }
+
+            saveData();
+            clearPermitForm();
+            renderAll();
+
+            alert(id ? "تم تعديل التصريح" : "تمت إضافة التصريح");
+        }
+
+        function editPermit(id) {
+            const permit = permits.find(function (item) {
+                return item.id === id;
+            });
+
+            if (!permit) {
+                return;
+            }
+
+            document.getElementById("permitFormTitle").textContent =
+                "تعديل التصريح";
+
+            document.getElementById("permitId").value = permit.id;
+            document.getElementById("permitPlate").value = permit.plate;
+            document.getElementById("permitOwner").value = permit.owner;
+            document.getElementById("permitEmployee").value = permit.employee || "";
+            document.getElementById("permitPhone").value = permit.phone || "";
+            document.getElementById("permitType").value = permit.type || "تصريح موظف";
+            document.getElementById("permitStart").value = permit.start || "";
+            document.getElementById("permitEnd").value = permit.end || "";
+            document.getElementById("permitNotes").value = permit.notes || "";
+
+            document.getElementById("extraFields").innerHTML = "";
+
+            (permit.extra || []).forEach(function (item) {
+                addExtraField(item.name, item.value);
+            });
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+        function cancelPermit(id) {
+            const permit = permits.find(function (item) {
+                return item.id === id;
+            });
+
+            if (!permit) {
+                return;
+            }
+
+            if (!confirm("هل تريد إلغاء التصريح؟")) {
+                return;
+            }
+
+            permit.status = "ملغى";
+
+            addAudit(
+                "إلغاء تصريح",
+                `إلغاء تصريح المركبة ${permit.plate} - ${permit.owner}`
+            );
+
+            saveData();
+            renderAll();
+
+            alert("تم إلغاء التصريح");
+        }
+
+        function clearPermitForm() {
+            document.getElementById("permitFormTitle").textContent =
+                "إضافة تصريح جديد";
+
+            document.getElementById("permitId").value = "";
+            document.getElementById("permitPlate").value = "";
+            document.getElementById("permitOwner").value = "";
+            document.getElementById("permitEmployee").value = "";
+            document.getElementById("permitPhone").value = "";
+            document.getElementById("permitType").value = "تصريح موظف";
+            document.getElementById("permitStart").value = "";
+            document.getElementById("permitEnd").value = "";
+            document.getElementById("permitNotes").value = "";
+            document.getElementById("extraFields").innerHTML = "";
+        }
+
+        function renderPermits() {
+            const table = document.getElementById("permitTable");
+
+            document.getElementById("permitCount").textContent =
+                permits.length + " تصريح";
+
+            if (!permits.length) {
+                table.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="empty">لا توجد تصاريح</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            table.innerHTML = permits.map(function (permit) {
+                const status = getStatus(permit);
+
+                return `
+                    <tr>
+                        <td>${escapeHtml(permit.id)}</td>
+                        <td>${escapeHtml(permit.plate)}</td>
+                        <td>${escapeHtml(permit.owner)}</td>
+                        <td>${escapeHtml(permit.employee || "-")}</td>
+                        <td>${escapeHtml(permit.type || "-")}</td>
+                        <td>${escapeHtml(permit.end || "-")}</td>
+                        <td>
+                            <span class="status ${statusClass(status)}">
+                                ${status}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-gray" onclick="editPermit('${permit.id}')">
+                                تعديل
+                            </button>
+
+                            ${
+                                permit.status !== "ملغى"
+                                    ? `
+                                    <button class="btn btn-danger" onclick="cancelPermit('${permit.id}')">
+                                        إلغاء
+                                    </button>
+                                    `
+                                    : ""
+                            }
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        function renderMovements() {
+            const table = document.getElementById("movementTable");
+
+            if (!movements.length) {
+                table.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="empty">لا توجد حركات مسجلة</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            table.innerHTML = movements.slice(0, 30).map(function (item) {
+                return `
+                    <tr>
+                        <td>${escapeHtml(item.plate)}</td>
+                        <td>${escapeHtml(item.owner)}</td>
+                        <td>
+                            <span class="status ${item.type === "دخول" ? "green" : "gold"}">
+                                ${item.type}
+                            </span>
+                        </td>
+                        <td>${escapeHtml(item.user)}</td>
+                        <td>${escapeHtml(item.date)}</td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        function addAudit(action, details) {
+            audit.unshift({
+                user: currentUser ? currentUser.name : "غير معروف",
+                action: action,
+                details: details,
+                date: new Date().toLocaleString("ar-KW")
+            });
+
+            saveData();
+        }
+
+        function renderAudit() {
+            const table = document.getElementById("auditTable");
+
+            if (!audit.length) {
+                table.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="empty">لا توجد عمليات مسجلة</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            table.innerHTML = audit.map(function (item) {
+                let status = "green";
+
+                if (item.action.includes("تعديل")) {
+                    status = "gold";
+                }
+
+                if (item.action.includes("إلغاء")) {
+                    status = "red";
+                }
+
+                return `
+                    <tr>
+                        <td>${escapeHtml(item.user)}</td>
+                        <td>
+                            <span class="status ${status}">
+                                ${escapeHtml(item.action)}
+                            </span>
+                        </td>
+                        <td>${escapeHtml(item.details)}</td>
+                        <td>${escapeHtml(item.date)}</td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        function updateStats() {
+            const active = permits.filter(function (item) {
+                return getStatus(item) === "ساري";
+            }).length;
+
+            const cancelled = permits.filter(function (item) {
+                return item.status === "ملغى";
+            }).length;
+
+            const expired = permits.filter(function (item) {
+                return getStatus(item) === "منتهي";
+            }).length;
+
+            const entries = movements.filter(function (item) {
+                return item.type === "دخول";
+            }).length;
+
+            const exits = movements.filter(function (item) {
+                return item.type === "خروج";
+            }).length;
+
+            const latest = {};
+
+            movements.forEach(function (item) {
+                if (!latest[item.plate]) {
+                    latest[item.plate] = item.type;
+                }
+            });
+
+            const inside = Object.values(latest).filter(function (item) {
+                return item === "دخول";
+            }).length;
+
+            document.getElementById("insideCount").textContent = inside;
+            document.getElementById("entryCount").textContent = entries;
+            document.getElementById("exitCount").textContent = exits;
+            document.getElementById("expiredCount").textContent = expired;
+
+            document.getElementById("adminPermits").textContent = permits.length;
+            document.getElementById("adminMovements").textContent = movements.length;
+            document.getElementById("adminActive").textContent = active;
+            document.getElementById("adminCancelled").textContent = cancelled;
+        }
+
+        function getStatus(permit) {
+            if (permit.status === "ملغى") {
+                return "ملغى";
+            }
+
+            if (!permit.end) {
+                return "ساري";
+            }
+
+            const endDate = new Date(permit.end + "T23:59:59");
+
+            if (endDate < new Date()) {
+                return "منتهي";
+            }
+
+            return "ساري";
+        }
+
+        function statusClass(status) {
+            if (status === "ساري") {
+                return "green";
+            }
+
+            if (status === "ملغى" || status === "منتهي") {
+                return "red";
+            }
+
+            return "gold";
+        }
+
+        function exportAudit() {
+            if (!audit.length) {
+                alert("لا يوجد سجل لتصديره");
+                return;
+            }
+
+            let csv = "المستخدم,العملية,التفاصيل,التاريخ\n";
+
+            audit.forEach(function (item) {
+                csv += `"${item.user}","${item.action}","${item.details}","${item.date}"\n`;
+            });
+
+            const blob = new Blob(["\ufeff" + csv], {
+                type: "text/csv;charset=utf-8"
+            });
+
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+
+            link.href = url;
+            link.download = "سجل-عمليات-البوابة.csv";
+            link.click();
+
+            URL.revokeObjectURL(url);
+        }
+
+        function clearAudit() {
+            if (!confirm("هل تريد مسح سجل العمليات؟")) {
+                return;
+            }
+
+            audit = [];
+            saveData();
+            renderAudit();
+        }
+
+        function saveData() {
+            localStorage.setItem("gatePermits", JSON.stringify(permits));
+            localStorage.setItem("gateMovements", JSON.stringify(movements));
+            localStorage.setItem("gateAudit", JSON.stringify(audit));
+        }
+
+        function renderAll() {
+            renderPermits();
+            renderMovements();
+            renderAudit();
+            updateStats();
+        }
+
+        function escapeHtml(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+
+</body>
+</html>
