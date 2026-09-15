@@ -18,8 +18,8 @@
             margin: 0;
             min-height: 100vh;
             font-family: Arial, Tahoma, sans-serif;
-            background: #eef3f7;
             color: #263746;
+            background: #eef3f7;
         }
 
         button,
@@ -48,12 +48,12 @@
 
         .landing-card {
             width: 100%;
-            max-width: 800px;
+            max-width: 820px;
             padding: 40px;
             text-align: center;
-            background: white;
+            background: #fff;
             border-radius: 25px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, .3);
+            box-shadow: 0 20px 50px #0005;
         }
 
         .logo {
@@ -109,7 +109,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            background: rgba(0, 0, 0, .7);
+            background: #000b;
         }
 
         .overlay.show {
@@ -227,7 +227,7 @@
             align-items: center;
             gap: 10px;
             padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255,255,255,.2);
+            border-bottom: 1px solid #ffffff33;
         }
 
         .brand img {
@@ -259,7 +259,7 @@
         .side-button:hover,
         .side-button.active {
             color: white;
-            background: rgba(255,255,255,.15);
+            background: #ffffff26;
         }
 
         .main {
@@ -335,7 +335,7 @@
             padding: 20px;
             background: white;
             border-radius: 14px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, .04);
+            box-shadow: 0 3px 12px #0000000a;
         }
 
         .stat strong {
@@ -533,8 +533,6 @@
 
 <body>
 
-    <!-- الصفحة الرئيسية -->
-
     <section class="landing" id="landingPage">
         <div class="landing-card">
             <img src="logo.png" class="logo" alt="الشعار">
@@ -565,8 +563,6 @@
         </div>
     </section>
 
-    <!-- تسجيل الدخول -->
-
     <div class="overlay" id="loginOverlay">
         <div class="login-box">
             <button class="close-button"
@@ -593,8 +589,6 @@
             </form>
         </div>
     </div>
-
-    <!-- لوحة التحكم -->
 
     <section class="dashboard" id="dashboard">
 
@@ -644,12 +638,11 @@
 
             <div class="content">
 
-                <!-- صفحة الأمن -->
-
                 <section class="page active" id="securityPage">
 
                     <div class="welcome">
                         <h2>مرحبًا بك في بوابة الأمن</h2>
+
                         <p>
                             صوّر اللوحة أو أدخل الرقم يدويًا، مثل:
                             4/66759
@@ -751,7 +744,6 @@
                                 </button>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="card">
@@ -773,15 +765,13 @@
                             </table>
                         </div>
                     </div>
-
                 </section>
-
-                <!-- صفحة التصاريح -->
 
                 <section class="page" id="permitsPage">
 
                     <div class="welcome">
                         <h2>إدارة التصاريح</h2>
+
                         <p>
                             أضف أي لوحة تريدها، مثل:
                             4/66759 أو 2/12345
@@ -797,6 +787,7 @@
                             <div>
                                 <div class="field">
                                     <label>رقم اللوحة *</label>
+
                                     <input id="permitPlate"
                                         placeholder="مثال: 4/66759">
                                 </div>
@@ -870,10 +861,7 @@
                             </table>
                         </div>
                     </div>
-
                 </section>
-
-                <!-- صفحة الإدارة -->
 
                 <section class="page" id="adminPage">
 
@@ -934,7 +922,6 @@
                             </table>
                         </div>
                     </div>
-
                 </section>
 
             </div>
@@ -943,7 +930,7 @@
 
     <script>
         /*
-         * بيانات الدخول
+         * بيانات تسجيل الدخول
          */
 
         const users = {
@@ -970,26 +957,24 @@
         let currentUser = null;
         let selectedCar = null;
 
-        /*
-         * قراءة البيانات الموجودة فقط.
-         * لا توجد لوحة تجريبية ثابتة.
-         */
-
-        let permits = JSON.parse(
-            localStorage.getItem("gatePermits") || "[]"
-        );
-
-        let movements = JSON.parse(
-            localStorage.getItem("gateMovements") || "[]"
-        );
-
-        let audit = JSON.parse(
-            localStorage.getItem("gateAudit") || "[]"
-        );
+        let permits = loadArray("gatePermits");
+        let movements = loadArray("gateMovements");
+        let audit = loadArray("gateAudit");
 
         document.addEventListener("DOMContentLoaded", function () {
             renderAll();
         });
+
+        function loadArray(key) {
+            try {
+                const data = localStorage.getItem(key);
+                const parsed = data ? JSON.parse(data) : [];
+
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (error) {
+                return [];
+            }
+        }
 
         /*
          * تسجيل الدخول
@@ -1112,7 +1097,11 @@
          */
 
         function openCamera() {
-            document.getElementById("cameraInput").click();
+            const input =
+                document.getElementById("cameraInput");
+
+            input.value = "";
+            input.click();
         }
 
         document.getElementById("cameraInput")
@@ -1142,7 +1131,7 @@
                         </div>
 
                         <p id="ocrMessage">
-                            يرجى الانتظار
+                            جاري تجهيز الصورة
                         </p>
 
                         <button class="btn btn-gray"
@@ -1155,222 +1144,239 @@
             });
 
         /*
-         * قراءة رقم اللوحة
+         * OCR:
+         * يتم تجربة أكثر من إعداد حتى تزيد فرصة القراءة.
          */
 
         async function readPlateNumber(file) {
-            const progressBar =
-                document.getElementById("ocrProgressBar");
-
             const message =
                 document.getElementById("ocrMessage");
 
+            const progressBar =
+                document.getElementById("ocrProgressBar");
+
             try {
-                message.textContent =
-                    "جاري تجهيز الصورة...";
+                const image = await loadImage(file);
 
-                const processedImage =
-                    await preparePlateImage(file);
+                const variants = [
+                    createOCRImage(image, 1),
+                    createOCRImage(image, 2),
+                    createOCRImage(image, 3)
+                ];
 
-                const result = await Tesseract.recognize(
-                    processedImage,
-                    "eng",
-                    {
-                        tessedit_pageseg_mode: "6",
+                let finalPlate = "";
 
-                        tessedit_char_whitelist:
-                            "0123456789/",
-
-                        logger: function (info) {
-                            if (
-                                info.status ===
-                                "recognizing text"
-                            ) {
-                                const progress =
-                                    Math.round(
-                                        info.progress * 100
-                                    );
-
-                                progressBar.style.width =
-                                    progress + "%";
-
-                                message.textContent =
-                                    "جاري القراءة: " +
-                                    progress + "%";
-                            }
-                        }
-                    }
-                );
-
-                const ocrText =
-                    result.data.text || "";
-
-                const plateNumber =
-                    extractPlateNumber(ocrText);
-
-                if (!plateNumber) {
+                for (
+                    let i = 0;
+                    i < variants.length;
+                    i++
+                ) {
                     message.textContent =
-                        "لم يتم التعرف على الرقم، أدخله يدويًا";
+                        "محاولة قراءة اللوحة " +
+                        (i + 1) +
+                        " من " +
+                        variants.length;
+
+                    const result =
+                        await Tesseract.recognize(
+                            variants[i],
+                            "eng",
+                            {
+                                logger: function (info) {
+                                    if (
+                                        info.status ===
+                                        "recognizing text"
+                                    ) {
+                                        const part =
+                                            info.progress || 0;
+
+                                        const total =
+                                            (i + part) /
+                                            variants.length;
+
+                                        progressBar.style.width =
+                                            Math.round(
+                                                total * 100
+                                            ) + "%";
+                                    }
+                                },
+
+                                config: {
+                                    tessedit_pageseg_mode: "11",
+                                    tessedit_char_whitelist:
+                                        "0123456789/"
+                                }
+                            }
+                        );
+
+                    const text =
+                        result.data.text || "";
+
+                    console.log(
+                        "OCR Attempt " + (i + 1),
+                        text
+                    );
+
+                    finalPlate =
+                        extractPlateNumber(text);
+
+                    if (finalPlate) {
+                        break;
+                    }
+                }
+
+                if (!finalPlate) {
+                    message.textContent =
+                        "لم يتم التعرف على الرقم";
 
                     alert(
-                        "لم يتم التعرف على رقم اللوحة. " +
-                        "يرجى إدخاله يدويًا مثل 4/66759."
+                        "لم يتم التعرف على اللوحة. " +
+                        "يرجى إدخال الرقم يدويًا."
                     );
 
                     return;
                 }
 
                 document.getElementById("securityPlate")
-                    .value = plateNumber;
+                    .value = finalPlate;
 
                 message.textContent =
-                    "تم التعرف على: " + plateNumber;
+                    "تم التعرف على: " + finalPlate;
 
                 findCar();
 
             } catch (error) {
-                console.error("OCR Error:", error);
-
-                message.textContent =
-                    "تعذر قراءة اللوحة، أدخل الرقم يدويًا";
+                console.error(error);
 
                 alert(
-                    "تعذر قراءة الصورة. أدخل رقم اللوحة يدويًا."
+                    "حدث خطأ أثناء قراءة الصورة. " +
+                    "أدخل رقم اللوحة يدويًا."
                 );
             }
         }
 
-        /*
-         * تجهيز الصورة وقص منطقة الأرقام
-         */
-
-        function preparePlateImage(file) {
+        function loadImage(file) {
             return new Promise(function (resolve, reject) {
                 const image = new Image();
-                const imageUrl =
-                    URL.createObjectURL(file);
+                const url = URL.createObjectURL(file);
 
                 image.onload = function () {
-                    try {
-                        const canvas =
-                            document.createElement("canvas");
-
-                        const context =
-                            canvas.getContext("2d");
-
-                        /*
-                         * نأخذ الجزء الذي يحتوي على:
-                         * الرقم العلوي والرقم الكبير.
-                         */
-                        const cropX =
-                            Math.floor(image.width * 0.25);
-
-                        const cropY =
-                            Math.floor(image.height * 0.06);
-
-                        const cropWidth =
-                            Math.floor(image.width * 0.70);
-
-                        const cropHeight =
-                            Math.floor(image.height * 0.88);
-
-                        canvas.width = 1800;
-                        canvas.height = 1100;
-
-                        context.fillStyle = "white";
-                        context.fillRect(
-                            0,
-                            0,
-                            canvas.width,
-                            canvas.height
-                        );
-
-                        context.drawImage(
-                            image,
-                            cropX,
-                            cropY,
-                            cropWidth,
-                            cropHeight,
-                            0,
-                            0,
-                            canvas.width,
-                            canvas.height
-                        );
-
-                        const imageData =
-                            context.getImageData(
-                                0,
-                                0,
-                                canvas.width,
-                                canvas.height
-                            );
-
-                        for (
-                            let i = 0;
-                            i < imageData.data.length;
-                            i += 4
-                        ) {
-                            const red =
-                                imageData.data[i];
-
-                            const green =
-                                imageData.data[i + 1];
-
-                            const blue =
-                                imageData.data[i + 2];
-
-                            const gray =
-                                red * 0.299 +
-                                green * 0.587 +
-                                blue * 0.114;
-
-                            const value =
-                                gray > 145 ? 255 : 0;
-
-                            imageData.data[i] = value;
-                            imageData.data[i + 1] = value;
-                            imageData.data[i + 2] = value;
-                        }
-
-                        context.putImageData(
-                            imageData,
-                            0,
-                            0
-                        );
-
-                        const preview =
-                            document.getElementById(
-                                "previewImage"
-                            );
-
-                        if (preview) {
-                            preview.src =
-                                canvas.toDataURL("image/png");
-                        }
-
-                        canvas.toBlob(function (blob) {
-                            URL.revokeObjectURL(imageUrl);
-                            resolve(blob);
-                        }, "image/png");
-
-                    } catch (error) {
-                        URL.revokeObjectURL(imageUrl);
-                        reject(error);
-                    }
+                    URL.revokeObjectURL(url);
+                    resolve(image);
                 };
 
                 image.onerror = function () {
-                    URL.revokeObjectURL(imageUrl);
-                    reject(error);
+                    URL.revokeObjectURL(url);
+                    reject(new Error("تعذر تحميل الصورة"));
                 };
 
-                image.src = imageUrl;
+                image.src = url;
             });
         }
 
         /*
-         * استخراج الرقم بالشكل:
-         * 4/66759
+         * إنشاء صورة محسنة للقراءة.
+         * variant يغير منطقة القص قليلًا.
+         */
+
+        function createOCRImage(image, variant) {
+            const canvas =
+                document.createElement("canvas");
+
+            const context =
+                canvas.getContext("2d");
+
+            let x = 0;
+            let y = 0;
+            let width = image.width;
+            let height = image.height;
+
+            if (variant === 1) {
+                x = image.width * 0.10;
+                y = image.height * 0.05;
+                width = image.width * 0.80;
+                height = image.height * 0.90;
+            }
+
+            if (variant === 2) {
+                x = image.width * 0.20;
+                y = image.height * 0.10;
+                width = image.width * 0.70;
+                height = image.height * 0.80;
+            }
+
+            if (variant === 3) {
+                x = image.width * 0.02;
+                y = image.height * 0.02;
+                width = image.width * 0.96;
+                height = image.height * 0.96;
+            }
+
+            canvas.width = 1800;
+            canvas.height = 1000;
+
+            context.fillStyle = "white";
+            context.fillRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+            context.drawImage(
+                image,
+                x,
+                y,
+                width,
+                height,
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+            const imageData =
+                context.getImageData(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+            for (
+                let i = 0;
+                i < imageData.data.length;
+                i += 4
+            ) {
+                const red =
+                    imageData.data[i];
+
+                const green =
+                    imageData.data[i + 1];
+
+                const blue =
+                    imageData.data[i + 2];
+
+                const gray =
+                    red * 0.299 +
+                    green * 0.587 +
+                    blue * 0.114;
+
+                const value =
+                    gray > 145 ? 255 : 0;
+
+                imageData.data[i] = value;
+                imageData.data[i + 1] = value;
+                imageData.data[i + 2] = value;
+            }
+
+            context.putImageData(imageData, 0, 0);
+
+            return canvas.toDataURL("image/png");
+        }
+
+        /*
+         * استخراج رقم اللوحة.
          */
 
         function extractPlateNumber(text) {
@@ -1380,12 +1386,15 @@
                 convertArabicNumbersToEnglish(value);
 
             value = value
-                .replace(/[\\|]/g, "/")
+                .replace(/[\\|:؛،,._-]/g, "/")
                 .replace(/\s+/g, " ")
                 .trim();
 
-            const slashMatch =
-                value.match(/(\d{1,2})\s*\/\s*(\d{4,6})/);
+            console.log("OCR Result:", value);
+
+            const slashMatch = value.match(
+                /(\d{1,2})\s*\/\s*(\d{4,6})/
+            );
 
             if (slashMatch) {
                 return (
@@ -1398,9 +1407,7 @@
             const groups =
                 value.match(/\d+/g) || [];
 
-            if (groups.length < 2) {
-                return "";
-            }
+            console.log("OCR Number Groups:", groups);
 
             const topNumber =
                 groups.find(function (group) {
@@ -1408,9 +1415,13 @@
                 });
 
             const bottomNumber =
-                groups.find(function (group) {
-                    return group.length >= 4;
-                });
+                groups
+                    .filter(function (group) {
+                        return group.length >= 4;
+                    })
+                    .sort(function (a, b) {
+                        return b.length - a.length;
+                    })[0];
 
             if (topNumber && bottomNumber) {
                 return (
@@ -1420,29 +1431,37 @@
                 );
             }
 
+            /*
+             * إذا قرأ الرقم السفلي فقط،
+             * نرجعه كما هو بدون تخمين الرقم العلوي.
+             */
+            if (bottomNumber) {
+                return bottomNumber.slice(-5);
+            }
+
             return "";
         }
 
         function convertArabicNumbersToEnglish(text) {
-            const arabicNumbers = "٠١٢٣٤٥٦٧٨٩";
-            const persianNumbers = "۰۱۲۳۴۵۶۷۸۹";
-            const englishNumbers = "0123456789";
+            const arabic = "٠١٢٣٤٥٦٧٨٩";
+            const persian = "۰۱۲۳۴۵۶۷۸۹";
+            const english = "0123456789";
 
             return String(text)
                 .split("")
                 .map(function (character) {
                     const arabicIndex =
-                        arabicNumbers.indexOf(character);
+                        arabic.indexOf(character);
 
                     if (arabicIndex !== -1) {
-                        return englishNumbers[arabicIndex];
+                        return english[arabicIndex];
                     }
 
                     const persianIndex =
-                        persianNumbers.indexOf(character);
+                        persian.indexOf(character);
 
                     if (persianIndex !== -1) {
-                        return englishNumbers[persianIndex];
+                        return english[persianIndex];
                     }
 
                     return character;
@@ -1451,36 +1470,51 @@
         }
 
         /*
-         * توحيد رقم اللوحة للمقارنة
+         * البحث في التصاريح
          */
 
         function normalizePlate(plate) {
             return String(plate || "")
                 .toUpperCase()
                 .replace(/\s+/g, "")
-                .replace(/\\/g, "/");
+                .replace(/\\/g, "/")
+                .replace(/-/g, "/");
         }
 
-        /*
-         * البحث عن السيارة
-         */
-
         function findCar() {
-            const plate =
+            const enteredPlate =
                 document.getElementById("securityPlate")
                     .value.trim();
 
-            if (!plate) {
+            if (!enteredPlate) {
                 alert("يرجى إدخال رقم اللوحة");
                 return;
             }
 
-            const car = permits.find(function (permit) {
-                return (
-                    normalizePlate(permit.plate) ===
-                    normalizePlate(plate)
-                );
+            let car = permits.find(function (permit) {
+                return normalizePlate(permit.plate) ===
+                    normalizePlate(enteredPlate);
             });
+
+            /*
+             * إذا تمت قراءة الرقم السفلي فقط،
+             * نبحث عن تصريح ينتهي بنفس الرقم.
+             */
+            if (!car && /^\d{4,6}$/.test(enteredPlate)) {
+                car = permits.find(function (permit) {
+                    const normalized =
+                        normalizePlate(permit.plate);
+
+                    const parts =
+                        normalized.split("/");
+
+                    const bottom =
+                        parts[parts.length - 1];
+
+                    return bottom ===
+                        enteredPlate.slice(-5);
+                });
+            }
 
             if (!car) {
                 selectedCar = null;
@@ -1496,7 +1530,7 @@
 
                 alert(
                     "لا يوجد تصريح مسجل للوحة: " +
-                    plate
+                    enteredPlate
                 );
 
                 return;
@@ -1515,7 +1549,7 @@
         }
 
         /*
-         * تسجيل حركة
+         * تسجيل الدخول والخروج
          */
 
         function recordMovement(type) {
@@ -1560,7 +1594,7 @@
         }
 
         /*
-         * التصاريح
+         * حفظ التصاريح
          */
 
         function savePermit() {
@@ -1625,10 +1659,6 @@
                 );
 
             } else {
-                /*
-                 * هنا يتم حفظ اللوحة التي أدخلتها أنت.
-                 * لا توجد لوحة ثابتة أو قديمة.
-                 */
                 permits.unshift({
                     id: "PR-" + Date.now(),
                     ...permitData,
@@ -1757,7 +1787,7 @@
         }
 
         /*
-         * عرض التصاريح
+         * عرض البيانات
          */
 
         function renderPermits() {
@@ -1840,10 +1870,6 @@
             ).join("");
         }
 
-        /*
-         * عرض الحركات
-         */
-
         function renderMovements() {
             const table =
                 document.getElementById("movementTable");
@@ -1896,10 +1922,6 @@
                 .join("");
         }
 
-        /*
-         * عرض السجل
-         */
-
         function renderAudit() {
             const table =
                 document.getElementById("auditTable");
@@ -1940,10 +1962,6 @@
                 }
             ).join("");
         }
-
-        /*
-         * الإحصائيات
-         */
 
         function updateStats() {
             const entries =
@@ -2017,7 +2035,7 @@
         }
 
         /*
-         * التخزين والسجل
+         * الحفظ والسجل
          */
 
         function saveData() {
